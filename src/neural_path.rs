@@ -61,13 +61,16 @@ impl NeuralPathValidator {
 
             // Simplified linear: each output neuron sums a stride of the input
             let stride = (activations.len() / width).max(1);
-            for j in 0..width {
+            for (j, out) in layer_output.iter_mut().enumerate() {
+                if j >= width {
+                    break;
+                }
                 let start = j * stride;
                 let end = (start + stride).min(activations.len());
                 let sum: f32 = activations[start..end].iter().sum();
                 // ReLU
                 let relu = sum.max(0.0);
-                layer_output[j] = relu;
+                *out = relu;
 
                 let base_bit = if relu > 0.0 { 1u8 } else { 0u8 };
                 let shift = (bit_idx % 64) as u64;
@@ -102,7 +105,7 @@ impl NeuralPathValidator {
 
     /// Encode path bits as a compact hex string for on-chain storage.
     pub fn path_to_hex(path: &[u8]) -> String {
-        let mut bytes = Vec::with_capacity((path.len() + 7) / 8);
+        let mut bytes = Vec::with_capacity(path.len().div_ceil(8));
         for chunk in path.chunks(8) {
             let mut byte = 0u8;
             for (i, &bit) in chunk.iter().enumerate() {

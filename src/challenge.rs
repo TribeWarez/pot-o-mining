@@ -133,7 +133,7 @@ impl ChallengeGenerator {
         let mut floats: Vec<f32> = hash_bytes.iter().map(|&b| b as f32 / 255.0).collect();
         // Extend deterministically if hash is shorter than needed
         while floats.len() < total {
-            let seed = floats.len() as f32 * 0.618_033_99;
+            let seed = floats.len() as f32 * 0.618_034;
             floats.push(seed.fract());
         }
         floats.truncate(total);
