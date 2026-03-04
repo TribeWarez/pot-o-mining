@@ -56,7 +56,7 @@ impl Default for ChallengeGenerator {
 
         Self {
             base_difficulty: 2,
-            base_mml_threshold: 0.85,
+            base_mml_threshold: 2.0,
             base_path_distance,
             max_tensor_dim: pot_o_core::ESP_MAX_TENSOR_DIM,
             challenge_ttl_secs: 120,
