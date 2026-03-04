@@ -1,5 +1,6 @@
 use ai3_lib::tensor::{Tensor, TensorData, TensorShape};
 use ai3_lib::MiningTask;
+use crate::neural_path::NeuralPathValidator;
 use pot_o_core::TribeResult;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
@@ -47,10 +48,16 @@ pub struct ChallengeGenerator {
 
 impl Default for ChallengeGenerator {
     fn default() -> Self {
+        let base_path_distance =
+            NeuralPathValidator::default()
+                .layer_widths
+                .iter()
+                .sum::<usize>() as u32;
+
         Self {
             base_difficulty: 2,
             base_mml_threshold: 0.85,
-            base_path_distance: 8,
+            base_path_distance,
             max_tensor_dim: pot_o_core::ESP_MAX_TENSOR_DIM,
             challenge_ttl_secs: 120,
         }

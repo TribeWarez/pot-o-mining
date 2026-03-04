@@ -1,4 +1,4 @@
-use ai3_lib::tensor::{Tensor, TensorData, TensorShape};
+use ai3_lib::tensor::Tensor;
 use pot_o_core::TribeResult;
 use sha2::{Digest, Sha256};
 
@@ -53,15 +53,8 @@ impl NeuralPathValidator {
     /// Returns the binary activation pattern.
     pub fn compute_actual_path(&self, tensor: &Tensor, nonce: u64) -> TribeResult<Vec<u8>> {
         let mut activations = tensor.data.as_f32();
-
-        // Mix nonce into the input
-        for (i, v) in activations.iter_mut().enumerate() {
-            let nonce_contribution =
-                ((nonce.wrapping_add(i as u64)) as f32 * 0.000_001).sin() * 0.1;
-            *v += nonce_contribution;
-        }
-
         let mut path_bits = Vec::new();
+        let mut bit_idx: u32 = 0;
 
         for &width in &self.layer_widths {
             let mut layer_output = vec![0.0f32; width];
@@ -73,8 +66,16 @@ impl NeuralPathValidator {
                 let end = (start + stride).min(activations.len());
                 let sum: f32 = activations[start..end].iter().sum();
                 // ReLU
-                layer_output[j] = sum.max(0.0);
-                path_bits.push(if layer_output[j] > 0.0 { 1u8 } else { 0u8 });
+                let relu = sum.max(0.0);
+                layer_output[j] = relu;
+
+                let base_bit = if relu > 0.0 { 1u8 } else { 0u8 };
+                let shift = (bit_idx % 64) as u64;
+                let nonce_bit = ((nonce >> shift) & 1) as u8;
+                let bit = base_bit ^ nonce_bit;
+
+                path_bits.push(bit);
+                bit_idx = bit_idx.wrapping_add(1);
             }
 
             activations = layer_output;

@@ -1,8 +1,8 @@
 use crate::challenge::{Challenge, ChallengeGenerator};
 use crate::mml_path::MMLPathValidator;
 use crate::neural_path::NeuralPathValidator;
-use ai3_lib::{AI3Engine, Tensor};
-use pot_o_core::{TribeError, TribeResult};
+use ai3_lib::AI3Engine;
+use pot_o_core::TribeResult;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::time::Instant;
