@@ -10,9 +10,9 @@ checksum = "320119579fcad9c21884f5c4861d16174d0e06250625266f50fe6898340abefa"
 
 [[package]]
 name = "ai3-lib"
-version = "0.9.11"
+version = "0.9.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b45e2c5d13b3e1ac2cfa5d6b77f2fe4ae2f8023680112401ee309ab56519ec65"
+checksum = "c1dbef9b340b1cb9824a69b7d7f7e0bf80e86257429ebe7345d066c7c7766032"
 dependencies = [
  "chrono",
  "flate2",
@@ -364,9 +364,9 @@ checksum = "a89322df9ebe1c1578d689c92318e070967d1042b512afbe49518723f4e6d5cd"
 
 [[package]]
 name = "pot-o-core"
-version = "0.9.11"
+version = "0.9.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2bbe8b812c2ebff898ec316e198248a1282c6f59c38a055fd947186d38df17d5"
+checksum = "545e6577218d57cd5f56b82503ccb858e971abcf413df51f48f8bd69224e680b"
 dependencies = [
  "chrono",
  "hex",
@@ -378,7 +378,7 @@ dependencies = [
 
 [[package]]
 name = "pot-o-mining"
-version = "0.9.11"
+version = "0.9.12"
 dependencies = [
  "ai3-lib",
  "chrono",
